@@ -10,7 +10,15 @@ import (
 	"todo/Utils"
 )
 
+/*
+	1) Create separate function for parseBody, EncodeJSON, DecodeJSON, ResPondJSON and call it
+	2) send errors to frontend in a structured manner
+	3) use proper status code and send in responses
+*/
+
 func CreateUser(w http.ResponseWriter, r *http.Request) {
+
+	// No need of this line
 	fmt.Println("Creating the user")
 
 	var user Models.Users
@@ -21,6 +29,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
+
+		// send proper error messages with status code in a JSON format
+
 		fmt.Println("error")
 	}
 
@@ -33,6 +44,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(user)
 
+	// need to make a separate function in a file and place it to the dbHelper folder
+	// check first whether exists already or not then proceed further
+
 	queryString := `INSERT INTO regisuser (username, email, password)  VALUES ($1,$2,$3)`
 
 	fmt.Println(queryString)
@@ -43,6 +57,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("error in db execution")
 		return
 	}
+
+	/*
+		Its a very bad thing you are inserting the data first and then checking later whether the field is blank or not
+	*/
 
 	if user.UserName == "" || user.Email == "" || user.Password == "" {
 		json.NewEncoder(w).Encode("enter the data")
@@ -60,12 +78,17 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 
 	var user Models.Users
 
+	// create a struct model for the details
+
 	var storedEmail string
 	var storedPassword string
 
 	if r.Body == nil {
 		json.NewEncoder(w).Encode("Enter the creditionals")
 	}
+
+	// need to check arcvhived_at is null or not
+	// need to create session_id and JWT token here
 
 	Query := `Select email,password from regisuser where email=$1`
 
