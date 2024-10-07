@@ -114,6 +114,10 @@ func DeleteNote(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(Param)
 
+	// need to check archived_at us null or not
+	// we don't do hard delete just insert the timestamp in archived_at that is soft delete
+	// send proper response in JSON format to client
+
 	deleteQuery := `Delete from Todos where todoid=$1`
 	res, err := Database.DBConnection.Exec(deleteQuery, Param)
 	if err == nil {
