@@ -37,6 +37,7 @@ func SetupRoutes() *Server {
 		r.Route("/v1/todos", func(r chi.Router) {
 			r.Post("/create", Handle.CreateNote)
 			r.Get("/search", Handle.GetTodoByName)
+			r.Put("/updateTodo", Handle.UpdateTodo)
 			r.Put("/updateStatus", Handle.MarkCompleted)
 			r.Delete("/deleteTodo", Handle.TodoDeleted)
 		})

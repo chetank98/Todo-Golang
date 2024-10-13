@@ -109,4 +109,20 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("Deleting the user")
 
+	userCtx := Middleware.UserContext(r)
+	userID := userCtx.UserID
+	SessionId := userCtx.SessionID
+
+	saveErr := dbHelper.DeleteUser(userID)
+	if saveErr != nil {
+		Utils.RespondError(w, http.StatusInternalServerError, saveErr, "failed to delete user account")
+		return
+	}
+
+	saveErr = dbHelper.DeleteUserSession(SessionId)
+	if saveErr != nil {
+		Utils.RespondError(w, http.StatusInternalServerError, saveErr, "failed to delete user session")
+		return
+	}
+
 }

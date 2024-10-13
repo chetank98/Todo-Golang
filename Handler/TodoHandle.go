@@ -131,6 +131,34 @@ func MarkCompleted(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func UpdateTodo(w http.ResponseWriter, r *http.Request) {
+
+	var note Models.Todos
+
+	userCtx := Middleware.UserContext(r)
+	note.UserId = userCtx.UserID
+
+	if err := json.NewDecoder(r.Body).Decode(&note); err != nil {
+		Utils.RespondError(w, http.StatusBadRequest, err, "invalid request payload")
+		return
+	}
+
+	if note.Name == "" || note.Note == "" {
+		Utils.RespondError(w, http.StatusBadRequest, nil, "Put some data")
+		return
+	}
+
+	if err := dbHelper.UpdateTodo(note.Name, note.Note, note.UserId); err != nil {
+		Utils.RespondError(w, http.StatusInternalServerError, err, "error updating todo")
+		return
+	}
+
+	Utils.RespondJSON(w, http.StatusAccepted, struct {
+		Message string `json:"message"`
+	}{"Todo updated Successfully"})
+
+}
+
 func TodoDeleted(w http.ResponseWriter, r *http.Request) {
 
 	data := struct {

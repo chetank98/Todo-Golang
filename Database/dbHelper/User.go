@@ -98,3 +98,18 @@ func SessionGenerated(userId string) (string, error) {
 	}
 	return sessionID, nil
 }
+
+func DeleteUser(userId string) error {
+
+	SqlQuery := `UPDATE regisuser SET
+                    archived_at=now() 
+                		WHERE userid= $1
+                		  AND archived_at IS NULL`
+	//res, err := Database.DBconn.Exec("DELETE FROM usertodo WHERE id=$1", param.Id)
+	_, Err := Database.DBConnection.Exec(SqlQuery, userId)
+	if Err != nil {
+		return Err
+	}
+	return nil
+
+}

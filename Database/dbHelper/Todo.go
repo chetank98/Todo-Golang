@@ -29,6 +29,18 @@ func GetTodoByName(title, userId string) ([]Models.Todos, error) {
 	return todos, searchErr
 }
 
+func UpdateTodo(title, description, userId string) error {
+
+	SqlQuery := `UPDATE todos SET title = $1, description = $2  WHERE id = $3`
+
+	_, updaErr := Database.DBConnection.Exec(SqlQuery, title, description, userId)
+	if updaErr != nil {
+		return updaErr
+	}
+	return nil
+
+}
+
 func MarkComplete(id, UserId string) error {
 
 	SqlQuery := `UPDATE todos
