@@ -20,6 +20,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if r.Body == nil {
 		Utils.RespondError(w, http.StatusBadRequest, nil, "enter sufficient data")
 	}
+
 	decErr := json.NewDecoder(r.Body).Decode(&user)
 	if decErr != nil {
 		Utils.RespondError(w, http.StatusBadRequest, decErr, "failed to decode the data")
@@ -30,6 +31,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		Utils.RespondError(w, http.StatusInternalServerError, nil, "Failed to check user identity")
 	}
 
+	//toDo :- return statement if user already exist
 	if already {
 		Utils.RespondError(w, http.StatusBadRequest, nil, "User already in database")
 	}
@@ -113,6 +115,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	userID := userCtx.UserID
 	SessionId := userCtx.SessionID
 
+	//TODO   if a user is delete then its session will be deleted used in transaction
 	saveErr := dbHelper.DeleteUser(userID)
 	if saveErr != nil {
 		Utils.RespondError(w, http.StatusInternalServerError, saveErr, "failed to delete user account")

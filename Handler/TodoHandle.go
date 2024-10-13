@@ -74,6 +74,7 @@ func CreateNote(w http.ResponseWriter, r *http.Request) {
 
 func GetTodoByName(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Get todo by name")
+	//todo use this in model
 	data := struct {
 		Title string `json:"title"`
 	}{}
@@ -86,6 +87,7 @@ func GetTodoByName(w http.ResponseWriter, r *http.Request) {
 		Utils.RespondError(w, http.StatusBadRequest, dataErr, "Unable to Decode")
 	}
 
+	//TODO use validator
 	if data.Title == "" {
 		Utils.RespondError(w, http.StatusBadRequest, nil, "Enter the todo title")
 		return
@@ -102,7 +104,7 @@ func GetTodoByName(w http.ResponseWriter, r *http.Request) {
 }
 
 func MarkCompleted(w http.ResponseWriter, r *http.Request) {
-
+	//todo take this in query param
 	data := struct {
 		Id string `json:"id"`
 	}{}
@@ -161,6 +163,7 @@ func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 
 func TodoDeleted(w http.ResponseWriter, r *http.Request) {
 
+	//TODO use this in query param
 	data := struct {
 		ID string `json:"id"`
 	}{}

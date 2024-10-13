@@ -19,6 +19,7 @@ func CreateTodo(title, description, userId string) error {
 
 func GetTodoByName(title, userId string) ([]Models.Todos, error) {
 
+	//TODO add archived at check in todo
 	SqlQuery := `SELECT id,todo_id,title, description,is_completed 
 							FROM todos
 							WHERE id=$1 

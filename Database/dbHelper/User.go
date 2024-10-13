@@ -11,7 +11,7 @@ import (
 func AlreadyUser(email string) (bool, error) {
 	SQLQuery := `Select count(email) > 0 from regisuser
 						where email=TRIM(LOWER($1))
-						AND archived_at ISNULL`
+						AND archived_at IS NULL`
 	var check bool
 	AlreadyUserErr := Database.DBConnection.Get(&check, SQLQuery, email)
 	if AlreadyUserErr != nil {
@@ -59,6 +59,7 @@ func LoginCheck(email, password string) (string, string, string, error) {
 	var Email string
 	var hashPassword string
 
+	//TODO do not use queryRowx use GET method
 	err := Database.DBConnection.QueryRowx(SqlQuery, email).Scan(&userId, &Email, &name, &hashPassword)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
