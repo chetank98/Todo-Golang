@@ -29,6 +29,7 @@ func Health(w http.ResponseWriter, r *http.Request) {
 func RespondError(w http.ResponseWriter, statusCode int, err error, message string) {
 	logrus.Errorf("status: %d message: %s err: %+v ", statusCode, err, message)
 	w.WriteHeader(statusCode)
+	return
 }
 
 func EncodeJSONBody(resp http.ResponseWriter, data interface{}) error {

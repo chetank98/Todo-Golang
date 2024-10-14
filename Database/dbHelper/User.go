@@ -54,13 +54,20 @@ func LoginCheck(email, password string) (string, string, string, error) {
 						where archived_at IS NULL 
 						   AND email = TRIM($1)`
 
-	var name string
-	var userId string
-	var Email string
-	var hashPassword string
+	//var name string
+	//var userId string
+	//var Email string
+	//var hashPassword string
+
+	body := struct {
+		name         string
+		userId       string
+		Email        string
+		hashPassword string
+	}{}
 
 	//TODO do not use queryRowx use GET method
-	err := Database.DBConnection.QueryRowx(SqlQuery, email).Scan(&userId, &Email, &name, &hashPassword)
+	err := Database.DBConnection.Get(body, SqlQuery, email)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return "", "", "", nil
@@ -68,11 +75,11 @@ func LoginCheck(email, password string) (string, string, string, error) {
 		return "", "", "", err
 	}
 
-	passwordErr := Utils.CheckPassword(password, hashPassword)
+	passwordErr := Utils.CheckPassword(password, body.hashPassword)
 	if passwordErr != nil {
 		return "", "", "", passwordErr
 	}
-	return userId, Email, name, nil
+	return body.userId, body.Email, body.name, nil
 }
 
 func DeleteUserSession(sessionId string) error {
