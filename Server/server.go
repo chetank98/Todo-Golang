@@ -2,6 +2,7 @@ package Server
 
 import (
 	"github.com/go-chi/chi/v5"
+	"golang.org/x/net/context"
 	"net/http"
 	"time"
 	Handle "todo/Handler"
@@ -58,4 +59,10 @@ func (svc *Server) Run(port string) error {
 		WriteTimeout:      writeTimeout,
 	}
 	return svc.server.ListenAndServe()
+}
+
+func (svc *Server) Shutdown(timeout time.Duration) error {
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	return svc.server.Shutdown(ctx)
 }

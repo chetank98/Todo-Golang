@@ -24,7 +24,8 @@ func GetTodoByName(title, userId string) ([]Models.Todos, error) {
 	SqlQuery := `SELECT id,todo_id,title, description,is_completed 
 							FROM todos
 							WHERE id=$1 
-							AND title ILIKE  '%'|| $2 || '%'`
+							AND title ILIKE  '%'|| $2 || '%'
+							AND archieved_at IS NULL`
 
 	todos := make([]Models.Todos, 0)
 	searchErr := Database.DBConnection.Select(&todos, SqlQuery, userId, title)
