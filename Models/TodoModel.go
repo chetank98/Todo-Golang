@@ -1,5 +1,6 @@
 package Models
 
+// use camelcase and snake case carefully
 type Todos struct {
 	NoteId      string `json:"noteid" db:"id"`
 	UserId      string `json:"userid" db:"userId"`

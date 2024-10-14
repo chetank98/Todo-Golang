@@ -54,6 +54,13 @@ func LoginCheck(email, password string) (string, string, string, error) {
 						where archived_at IS NULL 
 						   AND email = TRIM($1)`
 
+
+	// you can make a model for this and you can use Get() instead of QueryRowx()
+	var name string
+	var userId string
+	var Email string
+	var hashPassword string
+
 	//var name string
 	//var userId string
 	//var Email string
@@ -65,6 +72,7 @@ func LoginCheck(email, password string) (string, string, string, error) {
 		Email        string
 		hashPassword string
 	}{}
+
 
 	//TODO do not use queryRowx use GET method
 	err := Database.DBConnection.Get(body, SqlQuery, email)
@@ -99,6 +107,8 @@ func SessionGenerated(userId string) (string, error) {
 	var sessionID string
 	query := `INSERT INTO user_sessions(id) 
               VALUES ($1) RETURNING session_id`
+
+	// use Get()
 	crtErr := Database.DBConnection.QueryRow(query, userId).Scan(&sessionID)
 
 	if crtErr != nil {

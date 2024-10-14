@@ -3,10 +3,11 @@ package Models
 import "time"
 
 type Users struct {
-	UserId     string    `json:"userid" db:"userid"`
-	UserName   string    `json:"username" db:"username"`
-	Email      string    `json:"email" db:"email"`
-	Password   string    `json:"password" db:"password"`
+	UserId   string `json:"userid" db:"userid"`
+	UserName string `json:"username" db:"username"`
+	Email    string `json:"email" db:"email"`
+	Password string `json:"password" db:"password"`
+	// use camelcase and snake case carefully
 	CreatedAt  time.Time `json:"created_at" db:"createdAt"`
 	ArchivedAt time.Time `json:"archived_at" db:"archived_at"`
 	Todos      Todos

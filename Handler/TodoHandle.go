@@ -49,12 +49,14 @@ func CreateNote(w http.ResponseWriter, r *http.Request) {
 	userCtx := Middleware.UserContext(r)
 	note.UserId = userCtx.UserID
 
+	// use parseBody()
 	dataErr := json.NewDecoder(r.Body).Decode(&note)
 	fmt.Println(r.Body)
 	if dataErr != nil {
 		Utils.RespondError(w, http.StatusBadRequest, dataErr, "invalid payload")
 	}
 
+	// use Validator
 	if note.Name == "" || note.Note == "" {
 		Utils.RespondError(w, http.StatusBadRequest, nil, "Put some data")
 		return
