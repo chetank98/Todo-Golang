@@ -17,6 +17,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	var user Models.Users
 
+	//  No need to check like this, create a parseBody() and call it whenever needed
 	if r.Body == nil {
 		Utils.RespondError(w, http.StatusBadRequest, nil, "enter sufficient data")
 	}
@@ -25,6 +26,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if decErr != nil {
 		Utils.RespondError(w, http.StatusBadRequest, decErr, "failed to decode the data")
 	}
+
+	// use validator here for input validation
 
 	already, alreadyErr := dbHelper.AlreadyUser(user.Email)
 	if alreadyErr != nil {
@@ -58,6 +61,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 
 	var login Models.UserLogin
 
+	// use parseBody()
 	err := json.NewDecoder(r.Body).Decode(&login)
 	if err != nil {
 		Utils.RespondError(w, http.StatusBadRequest, err, "invalid payload")
@@ -115,6 +119,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	userID := userCtx.UserID
 	SessionId := userCtx.SessionID
 
+	// make transaction for these two db calls
 	//TODO   if a user is delete then its session will be deleted used in transaction
 	saveErr := dbHelper.DeleteUser(userID)
 	if saveErr != nil {

@@ -17,6 +17,7 @@ import (
 const shutdownTimeout = 20 * time.Second
 
 func Home(w http.ResponseWriter, r *http.Request) {
+	// handle error
 	w.Write([]byte("Welcome to the app - Home Page of the todo "))
 }
 
