@@ -3,6 +3,7 @@ package Handle
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/go-chi/chi/v5"
 	"net/http"
 	"todo/Database/dbHelper"
 	"todo/Middleware"
@@ -166,9 +167,11 @@ func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 func TodoDeleted(w http.ResponseWriter, r *http.Request) {
 
 	//TODO use this in query param
-	data := struct {
-		ID string `json:"id"`
-	}{}
+	//data := struct {
+	//	ID string `json:"id"`
+	//}{}
+
+	data := chi.URLParam(r, "id")
 
 	userCtx := Middleware.UserContext(r)
 	userID := userCtx.UserID
@@ -179,12 +182,7 @@ func TodoDeleted(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if data.ID == "" {
-		Utils.RespondError(w, http.StatusBadRequest, nil, "todo id is required")
-		return
-	}
-
-	saveErr := dbHelper.DeleteTodo(data.ID, userID)
+	saveErr := dbHelper.DeleteTodo("id", userID)
 	if saveErr != nil {
 		Utils.RespondError(w, http.StatusInternalServerError, saveErr, "failed to delete todo")
 		return

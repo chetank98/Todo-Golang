@@ -37,6 +37,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	//toDo :- return statement if user already exist
 	if already {
 		Utils.RespondError(w, http.StatusBadRequest, nil, "User already in database")
+		return
 	}
 
 	hashedPassword, hasErr := Utils.HashPassword(user.Password)
